@@ -1,0 +1,21 @@
+# Phase 2 — live packet capture.
+# Install with: pip install -r requirements-capture.txt
+#
+# IMPORTANT — these also need a system-level packet capture driver, which
+# pip cannot install for you:
+#   - Windows: install Npcap (https://npcap.com) — required by scapy for
+#     live sniffing. Check "WinPcap API-compatible mode" during install.
+#   - Linux: libpcap is usually already present; if not, install it via
+#     your package manager (e.g. `sudo apt install libpcap-dev`).
+#   - macOS: libpcap ships with the OS.
+#
+# pyshark additionally requires the `tshark` binary (installed alongside
+# Wireshark itself, or via `sudo apt install tshark` on Linux). If tshark
+# isn't on your PATH, pyshark's live-capture calls will fail even though
+# the pip install succeeds.
+#
+# Live capture (scapy.sniff / pyshark live capture) also needs to be run
+# with administrator/root privileges on most systems.
+
+scapy>=2.6,<2.8
+pyshark>=0.6,<0.7

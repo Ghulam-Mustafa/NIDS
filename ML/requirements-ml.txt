@@ -1,0 +1,13 @@
+# Phase 1 — model training & comparison only.
+# Install with: pip install -r requirements-ml.txt
+# Tested on Python 3.10–3.12.
+
+scikit-learn>=1.4,<1.6
+pandas>=2.1,<2.3
+numpy>=1.26,<2.0
+joblib>=1.3,<2.0
+matplotlib>=3.8,<3.10
+
+# v2 pipeline only (SMOTE oversampling) — not needed if you're only
+# running the original v1 scripts in ml/models/.
+imbalanced-learn>=0.12,<0.15

@@ -1,0 +1,9 @@
+# Installs everything (all phases). If you only need one phase right now,
+# install that phase's file instead - see requirements-ml.txt,
+# requirements-capture.txt, requirements-backend.txt for notes on each
+# (in particular, requirements-capture.txt needs a system-level packet
+# capture driver that pip alone won't set up for you).
+
+-r requirements-ml.txt
+-r requirements-capture.txt
+-r requirements-backend.txt

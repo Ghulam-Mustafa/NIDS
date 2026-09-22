@@ -1,0 +1,7 @@
+# Phase 3 — FastAPI backend (pcap upload endpoint + WebSocket live stream).
+# Install with: pip install -r requirements-backend.txt
+
+fastapi>=0.115,<0.120
+uvicorn[standard]>=0.31,<0.35
+websockets>=13.0,<14.0
+python-multipart>=0.0.12,<0.1
