@@ -1,5 +1,7 @@
 # Hybrid Intrusion Detection System — Static + Dynamic
 
+# Note : Use python - 3.12.xx for better usability as other versions are incompatible
+
 A network intrusion detection interface with two modes:
 - **Static mode**: upload a `.pcap`/`.pcapng` file (e.g. exported from Wireshark) for offline analysis.
 - **Dynamic mode**: live packet capture + real-time classification and traffic monitoring.
