@@ -1,0 +1,59 @@
+# Central configuration for the CICIDS NIDS pipeline.
+# All paths are relative to the folder containing this file.
+
+data:
+  raw_glob: data/raw/*.csv        # the CICIDS2017 (MachineLearningCVE) or 2018 CSVs
+  processed_dir: data/processed
+  test_size: 0.2
+  random_state: 42
+  benign_cap: 0                   # 0 = keep every benign row (full ~2.8M dataset)
+
+preprocessing:
+  # identifiers that describe the capture, not the behaviour -> removed to avoid leakage
+  drop_columns: [flow id, src ip, dst ip, source ip, destination ip, src port, source port, timestamp]
+  corr_threshold: 0.98            # drop one of any feature pair correlated above this
+  corr_sample: 200000             # rows used to estimate correlations
+
+paths:
+  models_dir: models
+  reports_dir: reports
+
+# Stage 1: is this flow an attack? (binary, trained on all flows)
+detector:
+  type: hist_gradient_boosting    # hist_gradient_boosting | random_forest | extra_trees | decision_tree
+  max_train_rows: 0               # 0 = use all training rows
+  params:
+    max_iter: 300
+    learning_rate: 0.1
+    max_leaf_nodes: 63
+    early_stopping: true
+    n_iter_no_change: 15
+    random_state: 42
+
+# Stage 2: which attack is it? (multi-class, trained on attack flows only)
+classifier:
+  type: random_forest
+  params:
+    n_estimators: 150
+    class_weight: balanced_subsample
+    n_jobs: -1
+    random_state: 42
+
+# Stage 3: anomaly detector for unseen attacks. Trained on BENIGN flows only; flows the
+# detector calls benign but that look unlike normal traffic are labelled ANOMALY.
+anomaly:
+  enabled: true
+  type: isolation_forest
+  max_train_rows: 500000          # benign rows used to fit (80% of benign, capped)
+  target_fpr: 0.01                # share of normal benign flows allowed to be flagged
+  min_class_confidence: 0.5       # flagged flows whose best attack class scores below this -> ANOMALY
+  label: ANOMALY
+  params:
+    n_estimators: 200
+    max_samples: 256
+    random_state: 42
+    n_jobs: -1
+
+inference:
+  attack_threshold: 0.5           # detector probability above which stage 2 is run
+  benign_label: BENIGN
